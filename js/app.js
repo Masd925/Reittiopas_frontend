@@ -1,63 +1,87 @@
 $(function(){
-    var url = "https://koodihaaste.solidabis.com/reittiopas.json";
-    $.getJSON( url+"?callback=?", function( data ){
-        console.log( data.title ); // Logs "jQuery Howto"
-      });  
+    var routes = JSON.parse(reittiopasJsonTxt);
+    var nodeNames = routes.pysakit; // ["A", "B", ..., "R"]
+    var nodes = nodeNames.map(function(elem,index){return index;}); // [0,1,...,17]
+    var nNodes = nodes.length;
+    var roads = routes.tiet;
+    var busLines = routes.linjastot;
+    
+    function nodeIndex (nodeName) {
+        return nodeNames.indexOf(nodeName);
+    }
 
-    /*
-    $.ajax({
-        url: "https://cors-anywhere.herokuapp.com/https://koodihaaste.solidabis.com/reittiopas.json",
-    
-        dataType: "jsonp",
-        success: function( response ) {
-            console.log( response ); // server response
-        }
-    
+    var roadTraverseTimes = nodes.reduce(function(acc,curr){
+        acc[curr] = {};
+        return acc;
+    },{});
+    roads.forEach(function(road){
+        var from = road.mista;
+        var to = road.mihin;
+        var duration = road.kesto;
+        roadTraverseTimes[nodeIndex(from)][nodeIndex(to)] = duration;
+        roadTraverseTimes[nodeIndex(to)][nodeIndex(from)] = duration;
     });
-*/
-    /*
-    $.ajax({
+    var traverseTimes = nodes.reduce(function(acc,curr){
+        acc[curr] = {};
+        return acc;
+    },{});
+    var roadColors = nodes.reduce(function(acc,curr){
+        acc[curr] = {};
+        return acc;
+    },{});
 
-        // The 'type' property sets the HTTP method.
-        // A value of 'PUT' or 'DELETE' will trigger a preflight request.
-        type: 'GET',
-      
-        // The URL to make the request to.
-        url: 'https://koodihaaste.solidabis.com/reittiopas.json',
-      
-        // The 'contentType' property sets the 'Content-Type' header.
-        // The JQuery default for this property is
-        // 'application/x-www-form-urlencoded; charset=UTF-8', which does not trigger
-        // a preflight. If you set this value to anything other than
-        // application/x-www-form-urlencoded, multipart/form-data, or text/plain,
-        // you will trigger a preflight request.
-        contentType: 'text/plain',
-      
-        xhrFields: {
-          // The 'xhrFields' property sets additional fields on the XMLHttpRequest.
-          // This can be used to set the 'withCredentials' property.
-          // Set the value to 'true' if you'd like to pass cookies to the server.
-          // If this is enabled, your server must respond with the header
-          // 'Access-Control-Allow-Credentials: true'.
-          withCredentials: false
-        },
-      
-        headers: {
-          // Set any custom headers here.
-          // If you set any non-simple headers, your server must include these
-          // headers in the 'Access-Control-Allow-Headers' response header.
-        },
-      
-        success: function(data) {
-            console.log(data);
-        },
-      
-        error: function() {
-          // Here's where you handle an error response.
-          // Note that if the error was due to a CORS issue,
-          // this function will still fire, but there won't be any additional
-          // information about the error.
+    Object.keys(busLines).forEach(function(color){
+        var nodes = busLines[color].map(nodeIndex);
+        for (var i=0; i<nodes.length-1; i++) {
+            var first = nodes[i];
+            var second = nodes[i+1];
+            traverseTimes[first][second] = roadTraverseTimes[first][second];
+            traverseTimes[second][first] = roadTraverseTimes[second][first];
+            roadColors[first][second] = color;
+            roadColors[second][first] = color;
         }
-      });
-      */
-});
+    });
+
+    function fastestRoutes (traverseTimes) {
+        var nodes = Object.keys(traverseTimes).map(Number);
+        var nNodes = nodes.length;
+        var routeDuration = nodes.map(function(elem){
+            return nodes.slice().map(function(){return Infinity;});
+        });
+        var nextNode = nodes.map(function(elem){
+            return nodes.slice().map(function(){return null;});
+        });
+        nodes.forEach(function(node){
+            Object.keys(traverseTimes[node]).forEach(function(neighbour){
+                routeDuration[node][neighbour] = traverseTimes[node][neighbour];
+                nextNode[node][neighbour] = Number(neighbour);
+            });
+            routeDuration[node][node] = 0;
+            nextNode[node][node] = node;
+        });
+        for (k=0; k<nNodes; k++) {
+          for (i=0; i<nNodes; i++) {
+            for (j=0; j<nNodes; j++) {
+              if (routeDuration[i][j] > routeDuration[i][k] + routeDuration[k][j]) {
+                routeDuration[i][j] = routeDuration[i][k] + routeDuration[k][j];
+                nextNode[i][j] = nextNode[i][k];
+              }
+            }
+          }
+        }
+        function bestPath(source, destination) {
+          var nodes = [source];
+          var node = source;
+          while (node!==destination) {
+            node = nextNode[node][destination];
+            if (node===null) return null;
+            nodes.push(node);
+          }
+          return {nodes:nodes, totalTime:routeDuration[source][destination]};
+        }
+        return bestPath;
+    }
+
+    console.log(fastestRoutes(traverseTimes)(17,0));
+
+})
