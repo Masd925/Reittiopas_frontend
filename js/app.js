@@ -6,6 +6,8 @@ $(function () {
         var nNodes = nodes.length;
         var roads = routes.tiet;
         var busLines = routes.linjastot;
+        var colors = Object.keys(busLines);
+        console.log(colors);
 
         function nodeIndex(nodeName) {
             return nodeNames.indexOf(nodeName);
@@ -43,6 +45,8 @@ $(function () {
             }
         });
 
+
+
         function fastestRoutes(traverseTimes) {
             var nodes = Object.keys(traverseTimes).map(Number);
             var nNodes = nodes.length;
@@ -70,6 +74,22 @@ $(function () {
                     }
                 }
             }
+            
+            function nRouteColors (start, end) {
+                var usedColors = {};
+                var current = start;
+                while(current!==end) {
+                    var next = nextNode[current][end];
+                    usedColors[roadColors[current][next]] = true;
+                    current=next;
+                }
+                return colors.reduce(function(acc,curr){
+                    if (usedColors[curr]===true) return acc+1;
+                    return acc;
+                },0);
+            }
+            console.log(nRouteColors(0,15));
+
             function bestPath(source, destination) {
                 var nodes = [source];
                 var node = source;
@@ -144,27 +164,27 @@ $(function () {
             }
         }
 
-        
+
 
         function updateRoute() {
             reitti.empty();
             var bestRoute = routeGenerator(chosen_mista, chosen_mihin);
             var nodes = bestRoute.nodes;
             var totalTime = bestRoute.totalTime;
-            nodes.forEach(function(node, index){
+            nodes.forEach(function (node, index) {
                 var bestRouteElemContainer = $('<div></div>').addClass("bestRouteElemContainer");
                 var bestRouteNode = $('<span>' + nodeNames[node] + '</span>').addClass("bestRouteNode");
-            bestRouteElemContainer.append(bestRouteNode);
-            reitti.append(bestRouteElemContainer);
-            if (index<nodes.length) {
-                routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>'));
-                routeColorContainer.addClass(roadColors[node][nodes[index+1]]);
-                
-                reitti.append(routeColorContainer);
-            }
-            
+                bestRouteElemContainer.append(bestRouteNode);
+                reitti.append(bestRouteElemContainer);
+                if (index < nodes.length) {
+                    routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>'));
+                    routeColorContainer.addClass(roadColors[node][nodes[index + 1]]);
 
-            reitti.append(routeColorContainer);
+                    reitti.append(routeColorContainer);
+                }
+
+
+                reitti.append(routeColorContainer);
             });
 
             console.log(bestRoute);
