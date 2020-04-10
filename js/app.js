@@ -82,6 +82,7 @@ $(function(){
         return bestPath;
     }
 
-    console.log(fastestRoutes(traverseTimes)(17,0));
+    console.log((fastestRoutes(traverseTimes)(16,9)));
+    console.log(fastestRoutes(traverseTimes)(16,9).nodes.map(function(elem){return nodeNames[elem];}));
 
 })

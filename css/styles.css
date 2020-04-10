@@ -1,0 +1,16 @@
+#reittihaku {
+    margin: 0% 0% 0% 0%;
+    font-size:130%;
+    background-color:whitesmoke
+}
+.reittihakurow {
+    margin:1%
+}
+#reittihaku-title {
+    padding-bottom:2.5%
+}
+
+#heading-panel {
+    text-align: center;
+    background-color: gainsboro
+}
