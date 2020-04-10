@@ -81,8 +81,26 @@ $(function(){
         }
         return bestPath;
     }
+    
+    var mista = $('#mista');
+    var mihin = $('#mihin');
+    var reitti = $('#reitti');
 
-    console.log((fastestRoutes(traverseTimes)(16,9)));
-    console.log(fastestRoutes(traverseTimes)(16,9).nodes.map(function(elem){return nodeNames[elem];}));
+    nodes.forEach(function(node){
+        var nodeButtonContainer = $('<div></div>').addClass("nodeButtonContainer");
+        nodeButtonContainer.attr("id", "mista" + node).addClass("mista-buttons", "buttons");
+        var nodeElem = $('<span>' + nodeNames[node] + '</span>').addClass("nodeElem");
+        nodeButtonContainer.append(nodeElem);
+        mista.append(nodeButtonContainer);
+        
+        nodeButtonContainer = $('<div></div>').addClass("nodeButtonContainer");
+        nodeButtonContainer.attr("id", "mihin" + node).addClass("mihin-buttons", "buttons");
+        nodeElem = $('<span>' + nodeNames[node] + '</span>').addClass("nodeElem");
+        nodeButtonContainer.append(nodeElem);
+        mihin.append(nodeButtonContainer);
+    });
+
+    //console.log((fastestRoutes(traverseTimes)(16,9)));
+    //console.log(fastestRoutes(traverseTimes)(16,9).nodes.map(function(elem){return nodeNames[elem];}));
 
 })
