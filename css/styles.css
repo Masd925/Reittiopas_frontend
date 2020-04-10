@@ -3,20 +3,24 @@
     font-size:130%;
     background-color:whitesmoke
 }
-.reittihakurow {
+.reittihakupanel {
     margin:1%
 }
 #reittihaku-title {
     padding-bottom:2.5%
 }
 .content-row {
-    padding-bottom: 2%;
-    height: 4%
+    padding-bottom: 0%;
+    
 }
 
 #heading-panel {
     text-align: center;
     background-color: gainsboro
+}
+
+.reittihakurow {
+    margin-bottom: 1%
 }
 
 .nodeButtonContainer {
@@ -29,3 +33,20 @@
     border: 2px solid lightblue
 }
 
+#reitti {
+    font-weight: bold;
+}
+
+.highlight {
+    background-color: greenyellow;
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Opera and Firefox */
+  }
