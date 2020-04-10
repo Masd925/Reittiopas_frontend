@@ -151,8 +151,20 @@ $(function () {
             var bestRoute = routeGenerator(chosen_mista, chosen_mihin);
             var nodes = bestRoute.nodes;
             var totalTime = bestRoute.totalTime;
-            nodes.forEach(function(node){
+            nodes.forEach(function(node, index){
+                var bestRouteElemContainer = $('<div></div>').addClass("bestRouteElemContainer");
+                var bestRouteNode = $('<span>' + nodeNames[node] + '</span>').addClass("bestRouteNode");
+            bestRouteElemContainer.append(bestRouteNode);
+            reitti.append(bestRouteElemContainer);
+            if (index<nodes.length) {
+                routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>'));
+                routeColorContainer.addClass(roadColors[node][nodes[index+1]]);
                 
+                reitti.append(routeColorContainer);
+            }
+            
+
+            reitti.append(routeColorContainer);
             });
 
             console.log(bestRoute);

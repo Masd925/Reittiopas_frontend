@@ -1,7 +1,7 @@
 #reittihaku {
     margin: 0% 0% 0% 0%;
     font-size:130%;
-    background-color:whitesmoke
+    background-color:powderblue
 }
 .reittihakupanel {
     margin:1%
@@ -11,7 +11,6 @@
 }
 .content-row {
     padding-bottom: 0%;
-    
 }
 
 #heading-panel {
@@ -33,12 +32,38 @@
     border: 2px solid lightblue
 }
 
+.bestRouteElemContainer {
+    float: left;
+    margin-right: 1%;
+    margin-left: 1%
+}
+
+.routeColorContainer {
+    float: left
+}
+
 #reitti {
     font-weight: bold;
 }
 
 .highlight {
     background-color: greenyellow;
+}
+
+.keltainen {
+    background-color: yellow
+}
+
+.punainen {
+    background-color: red
+}
+
+.vihreä {
+    background-color: green;
+}
+
+.sininen {
+    background-color: blue;
 }
 
 .noselect {
