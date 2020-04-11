@@ -1,7 +1,7 @@
 #reittihaku {
     margin: 0% 0% 0% 0%;
     font-size:130%;
-    background-color:powderblue
+    background-color:rgb(213, 231, 231)
 }
 .reittihakupanel {
     margin:1%
@@ -15,7 +15,8 @@
 
 #heading-panel {
     text-align: center;
-    background-color: gainsboro
+    background-color: rgb(69, 69, 209);
+    color: whitesmoke;
 }
 
 .reittihakurow {
