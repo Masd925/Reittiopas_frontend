@@ -196,6 +196,7 @@ $(function () {
 
     }
     catch (error) {
-        $('#reitti').text("Palvelussa on teknisiä ongelmia. Yritä hetken kuluttua uudelleen.")
+        $('#reitti').text("Palvelussa on teknisiä ongelmia. Yritä hetken kuluttua uudelleen.");
+        console.log(error);
     }
 })
