@@ -75,3 +75,8 @@
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome, Opera and Firefox */
   }
+
+body {
+    background-color: rgb(72, 148, 173);
+}
+    
