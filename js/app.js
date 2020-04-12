@@ -136,7 +136,7 @@ $(function() {
         function clickHandler(e) {
             var id = $(e.target).attr("id");
             if (id === undefined) id = $(e.target).parent().attr("id");
-            if (id !== undefined) {
+            if (id !== undefined && id.length > 5) {
                 var rowName = id.slice(0, 5);
                 if (rowName === "mista" || rowName === "mihin") {
                     node = Number(id.slice(5));
