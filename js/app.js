@@ -71,19 +71,19 @@ $(function () {
                     }
                 }
             }
-            
-            function nRouteColors (start, end) {
+
+            function nRouteColors(start, end) {
                 var usedColors = {};
                 var current = start;
-                while(current!==end) {
+                while (current !== end) {
                     var next = nextNode[current][end];
                     usedColors[roadColors[current][next]] = true;
-                    current=next;
+                    current = next;
                 }
-                return colors.reduce(function(acc,curr){
-                    if (usedColors[curr]===true) return acc+1;
+                return colors.reduce(function (acc, curr) {
+                    if (usedColors[curr] === true) return acc + 1;
                     return acc;
-                },0);
+                }, 0);
             }
 
             function bestPath(source, destination) {  // Only minimal amount of information (nextNode) is stored for memory efficiency
