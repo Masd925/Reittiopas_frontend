@@ -72,20 +72,6 @@ $(function() {
                 }
             }
 
-            function nRouteColors(start, end) {
-                var usedColors = {};
-                var current = start;
-                while (current !== end) {
-                    var next = nextNode[current][end];
-                    usedColors[roadColors[current][next]] = true;
-                    current = next;
-                }
-                return colors.reduce(function(acc, curr) {
-                    if (usedColors[curr] === true) return acc + 1;
-                    return acc;
-                }, 0);
-            }
-
             function bestPath(source, destination) { // Only minimal amount of information (nextNode) is stored for memory efficiency
                 var nodes = [source]; // This function gets the best route from stored information
                 var node = source;
@@ -160,8 +146,6 @@ $(function() {
             }
         }
 
-
-
         function updateRoute() {
             reitti.empty();
             var bestRoute = routeGenerator(chosen_mista, chosen_mihin);
@@ -183,6 +167,7 @@ $(function() {
             reitti.append(distanceMessageContainer);
 
         }
+
     } catch (error) {
         $('#reitti').text("Palvelussa on teknisiä ongelmia. Yritä hetken kuluttua uudelleen.");
         console.log(error);
