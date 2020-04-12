@@ -1,9 +1,8 @@
 $(function () {
     try {
         var routes = JSON.parse(reittiopasJsonTxt);
-        var nodeNames = routes.pysakit; // ["A", "B", ..., "R"]
-        var nodes = nodeNames.map(function (elem, index) { return index; }); // [0,1,...,17]
-        var nNodes = nodes.length;
+        var nodeNames = routes.pysakit;  // ["A", "B", ..., "R"]
+        var nodes = nodeNames.map(function (elem, index) { return index; });  // [0,1,...,17]
         var roads = routes.tiet;
         var busLines = routes.linjastot;
         var colors = Object.keys(busLines);
@@ -13,7 +12,7 @@ $(function () {
             return nodeNames.indexOf(nodeName);
         }
 
-        var roadTraverseTimes = nodes.reduce(function (acc, curr) {
+        var roadTraverseTimes = nodes.reduce(function (acc, curr) {  // {A: {B:3,...},...}
             acc[curr] = {};
             return acc;
         }, {});
@@ -24,11 +23,11 @@ $(function () {
             roadTraverseTimes[nodeIndex(from)][nodeIndex(to)] = duration;
             roadTraverseTimes[nodeIndex(to)][nodeIndex(from)] = duration;
         });
-        var traverseTimes = nodes.reduce(function (acc, curr) {
+        var traverseTimes = nodes.reduce(function (acc, curr) {  // Considers not roads but bus line connections only
             acc[curr] = {};
             return acc;
         }, {});
-        var roadColors = nodes.reduce(function (acc, curr) {
+        var roadColors = nodes.reduce(function (acc, curr) {  // {A: {B:"vihreä",...},...}
             acc[curr] = {};
             return acc;
         }, {});
@@ -45,9 +44,7 @@ $(function () {
             }
         });
 
-
-
-        function fastestRoutes(traverseTimes) {
+        function fastestRoutes(traverseTimes) {  // Uses Floyd-Warshall algorithm to solve all best routes 
             var nodes = Object.keys(traverseTimes).map(Number);
             var nNodes = nodes.length;
             var routeDuration = nodes.map(function (elem) {
@@ -88,10 +85,9 @@ $(function () {
                     return acc;
                 },0);
             }
-            console.log(nRouteColors(0,15));
 
-            function bestPath(source, destination) {
-                var nodes = [source];
+            function bestPath(source, destination) {  // Only minimal amount of information (nextNode) is stored for memory efficiency
+                var nodes = [source];                 // This function gets the best route from stored information
                 var node = source;
                 while (node !== destination) {
                     node = nextNode[node][destination];
@@ -111,13 +107,13 @@ $(function () {
 
         nodes.forEach(function (node) {
             var nodeButtonContainer = $('<div></div>').addClass("nodeButtonContainer");
-            nodeButtonContainer.attr("id", "mista" + node).addClass("mista-buttons", "buttons");
+            nodeButtonContainer.attr("id", "mista" + node).addClass("buttons");
             var nodeElem = $('<span>' + nodeNames[node] + '</span>').addClass("nodeElem");
             nodeButtonContainer.append(nodeElem);
             mista.append(nodeButtonContainer);
 
             nodeButtonContainer = $('<div></div>').addClass("nodeButtonContainer");
-            nodeButtonContainer.attr("id", "mihin" + node).addClass("mihin-buttons", "buttons");
+            nodeButtonContainer.attr("id", "mihin" + node).addClass("buttons");
             nodeElem = $('<span>' + nodeNames[node] + '</span>').addClass("nodeElem");
             nodeButtonContainer.append(nodeElem);
             mihin.append(nodeButtonContainer);
@@ -179,21 +175,11 @@ $(function () {
                 if (index < nodes.length) {
                     routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>'));
                     routeColorContainer.addClass(roadColors[node][nodes[index + 1]]);
-
                     reitti.append(routeColorContainer);
                 }
-
-
                 reitti.append(routeColorContainer);
             });
-
-            console.log(bestRoute);
-            console.log(bestRoute.nodes.map(function (elem) { return nodeNames[elem]; }));
         }
-
-        //console.log((fastestRoutes(traverseTimes)(16,9)));
-        console.log(fastestRoutes(traverseTimes)(0, 17).nodes.map(function (elem) { return nodeNames[elem]; }));
-
     }
     catch (error) {
         $('#reitti').text("Palvelussa on teknisiä ongelmia. Yritä hetken kuluttua uudelleen.");
