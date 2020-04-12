@@ -51,6 +51,11 @@ body {
     float: left
 }
 
+.distanceMessageContainer {
+    padding-top: 2%;
+    clear: left;
+}
+
 #reitti {
     font-weight: bold;
 }

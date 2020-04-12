@@ -1,8 +1,8 @@
-$(function () {
+$(function() {
     try {
         var routes = JSON.parse(reittiopasJsonTxt);
-        var nodeNames = routes.pysakit;  // ["A", "B", ..., "R"]
-        var nodes = nodeNames.map(function (elem, index) { return index; });  // [0,1,...,17]
+        var nodeNames = routes.pysakit; // ["A", "B", ..., "R"]
+        var nodes = nodeNames.map(function(elem, index) { return index; }); // [0,1,...,17]
         var roads = routes.tiet;
         var busLines = routes.linjastot;
         var colors = Object.keys(busLines);
@@ -12,27 +12,27 @@ $(function () {
             return nodeNames.indexOf(nodeName);
         }
 
-        var roadTraverseTimes = nodes.reduce(function (acc, curr) {  // {A: {B:3,...},...}
+        var roadTraverseTimes = nodes.reduce(function(acc, curr) { // {A: {B:3,...},...}
             acc[curr] = {};
             return acc;
         }, {});
-        roads.forEach(function (road) {
+        roads.forEach(function(road) {
             var from = road.mista;
             var to = road.mihin;
             var duration = road.kesto;
             roadTraverseTimes[nodeIndex(from)][nodeIndex(to)] = duration;
             roadTraverseTimes[nodeIndex(to)][nodeIndex(from)] = duration;
         });
-        var traverseTimes = nodes.reduce(function (acc, curr) {  // Considers not roads but bus line connections only
+        var traverseTimes = nodes.reduce(function(acc, curr) { // Considers not roads but bus line connections only
             acc[curr] = {};
             return acc;
         }, {});
-        var roadColors = nodes.reduce(function (acc, curr) {  // {A: {B:"vihreä",...},...}
+        var roadColors = nodes.reduce(function(acc, curr) { // {A: {B:"vihreä",...},...}
             acc[curr] = {};
             return acc;
         }, {});
 
-        Object.keys(busLines).forEach(function (color) {
+        Object.keys(busLines).forEach(function(color) {
             var nodes = busLines[color].map(nodeIndex);
             for (var i = 0; i < nodes.length - 1; i++) {
                 var first = nodes[i];
@@ -44,17 +44,17 @@ $(function () {
             }
         });
 
-        function fastestRoutes(traverseTimes) {  // Uses Floyd-Warshall algorithm to solve all best routes 
+        function fastestRoutes(traverseTimes) { // Uses Floyd-Warshall algorithm to solve all best routes 
             var nodes = Object.keys(traverseTimes).map(Number);
             var nNodes = nodes.length;
-            var routeDuration = nodes.map(function (elem) {
-                return nodes.slice().map(function () { return Infinity; });
+            var routeDuration = nodes.map(function(elem) {
+                return nodes.slice().map(function() { return Infinity; });
             });
-            var nextNode = nodes.map(function (elem) {
-                return nodes.slice().map(function () { return null; });
+            var nextNode = nodes.map(function(elem) {
+                return nodes.slice().map(function() { return null; });
             });
-            nodes.forEach(function (node) {
-                Object.keys(traverseTimes[node]).forEach(function (neighbour) {
+            nodes.forEach(function(node) {
+                Object.keys(traverseTimes[node]).forEach(function(neighbour) {
                     routeDuration[node][neighbour] = traverseTimes[node][neighbour];
                     nextNode[node][neighbour] = Number(neighbour);
                 });
@@ -80,14 +80,14 @@ $(function () {
                     usedColors[roadColors[current][next]] = true;
                     current = next;
                 }
-                return colors.reduce(function (acc, curr) {
+                return colors.reduce(function(acc, curr) {
                     if (usedColors[curr] === true) return acc + 1;
                     return acc;
                 }, 0);
             }
 
-            function bestPath(source, destination) {  // Only minimal amount of information (nextNode) is stored for memory efficiency
-                var nodes = [source];                 // This function gets the best route from stored information
+            function bestPath(source, destination) { // Only minimal amount of information (nextNode) is stored for memory efficiency
+                var nodes = [source]; // This function gets the best route from stored information
                 var node = source;
                 while (node !== destination) {
                     node = nextNode[node][destination];
@@ -105,7 +105,7 @@ $(function () {
         var mihin = $('#mihin');
         var reitti = $('#reitti');
 
-        nodes.forEach(function (node) {
+        nodes.forEach(function(node) {
             var nodeButtonContainer = $('<div></div>').addClass("nodeButtonContainer");
             nodeButtonContainer.attr("id", "mista" + node).addClass("buttons");
             var nodeElem = $('<span>' + nodeNames[node] + '</span>').addClass("nodeElem");
@@ -167,7 +167,7 @@ $(function () {
             var bestRoute = routeGenerator(chosen_mista, chosen_mihin);
             var nodes = bestRoute.nodes;
             var totalTime = bestRoute.totalTime;
-            nodes.forEach(function (node, index) {
+            nodes.forEach(function(node, index) {
                 var bestRouteElemContainer = $('<div></div>').addClass("bestRouteElemContainer");
                 var bestRouteNode = $('<span>' + nodeNames[node] + '</span>').addClass("bestRouteNode");
                 bestRouteElemContainer.append(bestRouteNode);
@@ -179,9 +179,11 @@ $(function () {
                 }
                 reitti.append(routeColorContainer);
             });
+            var distanceMessageContainer = $('<div></div>').addClass("distanceMessageContainer").text("Kokonaisaika: " + totalTime + "min");
+            reitti.append(distanceMessageContainer);
+
         }
-    }
-    catch (error) {
+    } catch (error) {
         $('#reitti').text("Palvelussa on teknisiä ongelmia. Yritä hetken kuluttua uudelleen.");
         console.log(error);
     }
