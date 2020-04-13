@@ -141,9 +141,9 @@ $(function() {
         changeNodeHighlight("mihin", chosen_mihin, true);
         updateRoute();
 
-        $("#content-panel").on('click', clickHandler);
+        $("#content-panel").on('click', panel_clickHandler);
 
-        function clickHandler(e) {
+        function panel_clickHandler(e) {
             var id = $(e.target).attr("id");
             if (id === undefined) id = $(e.target).parent().attr("id");
             if (id !== undefined && id.length > 5) {
@@ -165,6 +165,33 @@ $(function() {
             if (rowName === "mihin" && node !== chosen_mihin && node !== chosen_mista) {
                 changeNodeHighlight("mihin", chosen_mihin, false);
                 changeNodeHighlight("mihin", node, true);
+                chosen_mihin = node;
+                updateRoute();
+            }
+        }
+
+        nodes.forEach(function(node) {
+            var nodeName = nodeNames[node];
+            var image = $("#image_container");
+            var left = img_stop_coordinates[nodeName][0];
+            var top = img_stop_coordinates[nodeName][1];
+            var button = $("<div></div>").addClass("map_button").css("left", left + "%").css("top", top + "%").attr("id", "button" + node);
+            image.append(button);
+        });
+
+        $("#image_container").on('click', img_clickHandler);
+
+        function img_clickHandler(e) {
+            var id = $(e.target).attr("id");
+            if (id !== undefined && id.slice(0, 6) === "button") {
+                var node = Number(id.slice(6));
+                imgBusstopClicked(node);
+            }
+        }
+
+        function imgBusstopClicked(node) {
+            if (node !== chosen_mihin) {
+                chosen_mista = chosen_mihin;
                 chosen_mihin = node;
                 updateRoute();
             }

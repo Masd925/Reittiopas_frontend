@@ -94,6 +94,13 @@ body {
     border: 3px solid green;
 }
 
+.map_button {
+    position: absolute;
+    height: 6%;
+    width: 4%;
+    border-radius: 10px;
+}
+
 .highlight {
     background-color: greenyellow;
 }
@@ -128,4 +135,10 @@ body {
     user-select: none;
     /* Non-prefixed version, currently
     supported by Chrome, Opera and Firefox */
+}
+
+@media only screen and (max-width: 480px) {
+    .only_large {
+        display: none;
+    }
 }
