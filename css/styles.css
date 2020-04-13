@@ -17,17 +17,21 @@ body {
 }
 
 .content-row {
-    padding-bottom: 0%;
+    padding-bottom: 0%
 }
 
 #heading-panel {
     text-align: center;
     background-color: rgb(69, 69, 209);
-    color: whitesmoke;
+    color: whitesmoke
 }
 
 .reittihakurow {
     margin-bottom: 1%
+}
+
+#info {
+    color: rgb(2, 75, 2)
 }
 
 .nodeButtonContainer {
@@ -52,16 +56,16 @@ body {
 
 .distanceMessageContainer {
     padding-top: 2%;
-    clear: left;
+    clear: left
 }
 
 #reitti {
-    font-weight: bold;
+    font-weight: bold
 }
 
 #image_container {
     padding-top: 1%;
-    position: relative;
+    position: relative
 }
 
 #map_image {
@@ -76,33 +80,33 @@ body {
     height: 3%;
     width: 2%;
     border: 2px solid blue;
-    border-radius: 10px;
+    border-radius: 10px
 }
 
 .route_edge {
     position: absolute;
     height: 6%;
     width: 4%;
-    border-radius: 10px;
+    border-radius: 10px
 }
 
 #route_start {
-    border: 3px double purple;
+    border: 3px double purple
 }
 
 #route_end {
-    border: 3px solid green;
+    border: 3px solid green
 }
 
 .map_button {
     position: absolute;
     height: 6%;
     width: 4%;
-    border-radius: 10px;
+    border-radius: 10px
 }
 
 .highlight {
-    background-color: greenyellow;
+    background-color: greenyellow
 }
 
 .keltainen {
@@ -139,6 +143,6 @@ body {
 
 @media only screen and (max-width: 480px) {
     .only_large {
-        display: none;
+        display: none
     }
 }
