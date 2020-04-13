@@ -4,8 +4,7 @@ body {
 }
 
 #reittihaku {
-    margin: 0% 0% 0% 0%;
-    font-size: 130%;
+    font-size: 120%;
     background-color: rgb(213, 231, 231)
 }
 
@@ -60,6 +59,41 @@ body {
     font-weight: bold;
 }
 
+#image_container {
+    padding-top: 1%;
+    position: relative;
+}
+
+#map_image {
+    height: 100%;
+    width: 100%;
+    position: relative
+}
+
+.ball {
+    position: absolute;
+    background-color: lightblue;
+    height: 3%;
+    width: 2%;
+    border: 2px solid blue;
+    border-radius: 10px;
+}
+
+.route_edge {
+    position: absolute;
+    height: 6%;
+    width: 4%;
+    border-radius: 10px;
+}
+
+#route_start {
+    border: 3px double purple;
+}
+
+#route_end {
+    border: 3px solid green;
+}
+
 .highlight {
     background-color: greenyellow;
 }
@@ -93,5 +127,5 @@ body {
     /* Internet Explorer/Edge */
     user-select: none;
     /* Non-prefixed version, currently
-                                    supported by Chrome, Opera and Firefox */
+    supported by Chrome, Opera and Firefox */
 }

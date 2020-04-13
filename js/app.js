@@ -6,7 +6,27 @@ $(function() {
         var roads = routes.tiet;
         var busLines = routes.linjastot;
         var colors = Object.keys(busLines);
-        console.log(colors);
+
+        var img_stop_coordinates = {
+            A: [6.8, 87],
+            B: [26.8, 87],
+            C: [6.8, 70],
+            D: [19, 70],
+            E: [19, 58.5],
+            F: [30, 48.3],
+            G: [45, 40.5],
+            H: [39.2, 23.8],
+            I: [50, 23.8],
+            J: [53.3, 8],
+            K: [86.7, 27],
+            L: [86.6, 38.3],
+            M: [86.6, 51.5],
+            N: [86.6, 67.5],
+            O: [86.6, 80.2],
+            P: [80, 92],
+            Q: [72.3, 80.2],
+            R: [47, 70.2]
+        };
 
         function nodeIndex(nodeName) {
             return nodeNames.indexOf(nodeName);
@@ -148,24 +168,41 @@ $(function() {
 
         function updateRoute() {
             reitti.empty();
+            $(".ball").remove();
             var bestRoute = routeGenerator(chosen_mista, chosen_mihin);
-            var nodes = bestRoute.nodes;
+            var routeNodes = bestRoute.nodes;
             var totalTime = bestRoute.totalTime;
-            nodes.forEach(function(node, index) {
+            routeNodes.forEach(function(node, index) {
                 var bestRouteElemContainer = $('<div></div>').addClass("bestRouteElemContainer");
                 var bestRouteNode = $('<span>' + nodeNames[node] + '</span>').addClass("bestRouteNode");
                 bestRouteElemContainer.append(bestRouteNode);
                 reitti.append(bestRouteElemContainer);
-                if (index < nodes.length) {
-                    routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>'));
-                    routeColorContainer.addClass(roadColors[node][nodes[index + 1]]);
+                if (index < routeNodes.length - 1) {
+                    var routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>'));
+                    routeColorContainer.addClass(roadColors[node][routeNodes[index + 1]]);
                     reitti.append(routeColorContainer);
+                    addBall(routeNodes[index], routeNodes[index + 1]);
                 }
                 reitti.append(routeColorContainer);
             });
             var distanceMessageContainer = $('<div></div>').addClass("distanceMessageContainer").text("Kokonaisaika: " + totalTime + "min");
             reitti.append(distanceMessageContainer);
+            updateMap(routeNodes);
+        }
 
+        function updateMap(routeNodes) {
+            var startNodeName = nodeNames[routeNodes[0]];
+            var endNodeName = nodeNames[routeNodes[routeNodes.length - 1]];
+            $("#route_start").css("left", img_stop_coordinates[startNodeName][0] + "%").css("top", img_stop_coordinates[startNodeName][1] + "%");
+            $("#route_end").css("left", img_stop_coordinates[endNodeName][0] + "%").css("top", img_stop_coordinates[endNodeName][1] + "%");
+        }
+
+        function addBall(node1, node2) {
+            var ball = $("<div></div>").addClass("ball");
+            var left = (img_stop_coordinates[nodeNames[node1]][0] + img_stop_coordinates[nodeNames[node2]][0]) / 2;
+            var top = (img_stop_coordinates[nodeNames[node1]][1] + img_stop_coordinates[nodeNames[node2]][1]) / 2;
+            ball.css("left", left + 0.75 + "%").css("top", top + 1.2 + "%");
+            $("#image_container").append(ball);
         }
 
     } catch (error) {
