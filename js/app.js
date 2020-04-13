@@ -201,7 +201,7 @@ $(function() {
             var ball = $("<div></div>").addClass("ball");
             var left = (img_stop_coordinates[nodeNames[node1]][0] + img_stop_coordinates[nodeNames[node2]][0]) / 2;
             var top = (img_stop_coordinates[nodeNames[node1]][1] + img_stop_coordinates[nodeNames[node2]][1]) / 2;
-            ball.css("left", left + 0.75 + "%").css("top", top + 1.2 + "%");
+            ball.css("left", left + 0.75 + "%").css("top", top + 1.5 + "%");
             $("#image_container").append(ball);
         }
 
