@@ -4,7 +4,7 @@ Frontend part of the solution to Solidabis coding challenge 2020
 
 Software was written with VSCode on Windows.
 Written using HTML5, CSS3, JQuery, and Bootstrap.
-SVG:s were stripped from problem page https://koodihaaste.solidabis.com/
+SVG:s were taken from problem page https://koodihaaste.solidabis.com/
 
 Best routes are calculated using own implementation of Floyd-Warshall algorithm 
 https://en.wikipedia.org/wiki/Floyd-Warshall_algorithm
@@ -18,10 +18,14 @@ Clone the repo into the root folder on a web server.
 ## Usage
 
 Allows the user to choose starting and end busstops and calculates and shows the fastest route and the total time taken.
+Route is shown as letters and colors, and with map marks.
+
 Backend part updates the served json.js file, so frontend is up to date if route info 
 on https://koodihaaste.solidabis.com/reittiopas.json changes.
 If some stops are removed, times between stops change, or bus routes change, page is kept up to date automatically.
-SVG:s need to be manually updated.
+Map picture and app.js img_stop_coordinates variable need to be manually updated. 
+
+Solution doesn't minimize vehicle changes between buslines.
 
 ## License
 
