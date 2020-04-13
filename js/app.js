@@ -1,13 +1,7 @@
 $(function() {
     try {
-        var routes = JSON.parse(reittiopasJsonTxt);
-        var nodeNames = routes.pysakit; // ["A", "B", ..., "R"]
-        var nodes = nodeNames.map(function(elem, index) { return index; }); // [0,1,...,17]
-        var roads = routes.tiet;
-        var busLines = routes.linjastot;
-        var colors = Object.keys(busLines);
 
-        var img_stop_coordinates = {
+        var img_stop_coordinates = { // Left and top coordinates of busstops on image
             A: [6.8, 87],
             B: [26.8, 87],
             C: [6.8, 70],
@@ -28,6 +22,13 @@ $(function() {
             R: [47, 70.2]
         };
 
+        var routes = JSON.parse(reittiopasJsonTxt);
+        var nodeNames = routes.pysakit; // ["A", "B", ..., "R"]
+        var nodes = nodeNames.map(function(elem, index) { return index; }); // [0,1,...,17]
+        var roads = routes.tiet;
+        var busLines = routes.linjastot;
+        var colors = Object.keys(busLines);
+
         function nodeIndex(nodeName) {
             return nodeNames.indexOf(nodeName);
         }
@@ -36,6 +37,7 @@ $(function() {
             acc[curr] = {};
             return acc;
         }, {});
+
         roads.forEach(function(road) {
             var from = road.mista;
             var to = road.mihin;
@@ -43,10 +45,12 @@ $(function() {
             roadTraverseTimes[nodeIndex(from)][nodeIndex(to)] = duration;
             roadTraverseTimes[nodeIndex(to)][nodeIndex(from)] = duration;
         });
+
         var traverseTimes = nodes.reduce(function(acc, curr) { // Considers not roads but bus line connections only
             acc[curr] = {};
             return acc;
         }, {});
+
         var roadColors = nodes.reduce(function(acc, curr) { // {A: {B:"vihreä",...},...}
             acc[curr] = {};
             return acc;
@@ -170,6 +174,10 @@ $(function() {
             reitti.empty();
             $(".ball").remove();
             var bestRoute = routeGenerator(chosen_mista, chosen_mihin);
+            if (bestRoute === null) {
+                $('#reitti').text("Valittua reittiä ei voi kulkea bussilla.");
+                return;
+            }
             var routeNodes = bestRoute.nodes;
             var totalTime = bestRoute.totalTime;
             routeNodes.forEach(function(node, index) {
@@ -198,10 +206,12 @@ $(function() {
         }
 
         function addBall(node1, node2) {
+            var topOffset = 1.5;
+            var leftOffset = 0.75;
             var ball = $("<div></div>").addClass("ball");
             var left = (img_stop_coordinates[nodeNames[node1]][0] + img_stop_coordinates[nodeNames[node2]][0]) / 2;
             var top = (img_stop_coordinates[nodeNames[node1]][1] + img_stop_coordinates[nodeNames[node2]][1]) / 2;
-            ball.css("left", left + 0.75 + "%").css("top", top + 1.5 + "%");
+            ball.css("left", left + leftOffset + "%").css("top", top + topOffset + "%");
             $("#image_container").append(ball);
         }
 
