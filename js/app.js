@@ -130,7 +130,7 @@ $(function() {
         });
 
         var chosen_mista = 0;
-        var chosen_mihin = 1;
+        var chosen_mihin = 10;
 
         function changeNodeHighlight(rowName, node, isAdded) {
             if (isAdded) $('#' + rowName + node).addClass("highlight");
@@ -191,8 +191,12 @@ $(function() {
 
         function imgBusstopClicked(node) {
             if (node !== chosen_mihin) {
+                changeNodeHighlight("mihin", chosen_mihin, false);
+                changeNodeHighlight("mista", chosen_mista, false);
                 chosen_mista = chosen_mihin;
                 chosen_mihin = node;
+                changeNodeHighlight("mihin", chosen_mihin, true);
+                changeNodeHighlight("mista", chosen_mista, true);
                 updateRoute();
             }
         }
