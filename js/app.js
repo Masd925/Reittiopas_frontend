@@ -237,7 +237,7 @@ $(function() {
         }
 
         function addBall(node1, node2) {
-            nBalls = 3;
+            nBalls = traverseTimes[node1][node2];
             var topOffset = 2.25;
             var leftOffset = 1.25;
             for (var i = 1; i <= nBalls; i++) {
