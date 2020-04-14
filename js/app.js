@@ -97,7 +97,7 @@ $(function() {
             }
 
             function bestPath(source, destination) { // Only minimal amount of information (nextNode) is stored for memory efficiency
-                var nodes = [source]; // This function gets the best route from stored information
+                var nodes = [source]; //                This function gets the best route from stored information
                 var node = source;
                 while (node !== destination) {
                     node = nextNode[node][destination];
