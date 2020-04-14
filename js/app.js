@@ -237,13 +237,23 @@ $(function() {
         }
 
         function addBall(node1, node2) {
-            var topOffset = 1.5;
-            var leftOffset = 0.75;
-            var ball = $("<div></div>").addClass("ball");
-            var left = (img_stop_coordinates[nodeNames[node1]][0] + img_stop_coordinates[nodeNames[node2]][0]) / 2;
-            var top = (img_stop_coordinates[nodeNames[node1]][1] + img_stop_coordinates[nodeNames[node2]][1]) / 2;
-            ball.css("left", left + leftOffset + "%").css("top", top + topOffset + "%");
-            $("#image_container").append(ball);
+            nBalls = 3;
+            var topOffset = 2.25;
+            var leftOffset = 1.25;
+            for (var i = 1; i <= nBalls; i++) {
+                var ball = $("<div></div>").addClass("ball");
+                var left1 = img_stop_coordinates[nodeNames[node1]][0];
+                var left2 = img_stop_coordinates[nodeNames[node2]][0];
+                var top1 = img_stop_coordinates[nodeNames[node1]][1];
+                var top2 = img_stop_coordinates[nodeNames[node2]][1];
+                var leftChange = left2 - left1;
+                var topChange = top2 - top1;
+                var left = left1 + i / (nBalls + 1) * leftChange;
+                var top = top1 + i / (nBalls + 1) * topChange;
+                ball.css("left", left + leftOffset + "%").css("top", top + topOffset + "%");
+                $("#image_container").append(ball);
+            }
+
         }
 
     } catch (error) {
