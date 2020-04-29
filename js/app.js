@@ -124,9 +124,6 @@ $(function() {
         var chosen_mihin = 10;
         var isHoveringInfo = false;
 
-
-
-
         updateRoute();
 
         nodes.forEach(function(node) {
