@@ -51,7 +51,7 @@ $(function() {
             return acc;
         }, {});
 
-        var roadColors = nodes.reduce(function(acc, curr) { // {A: {B:"vihreä",...},...}
+        var roadColors = nodes.reduce(function(acc, curr) { // {4: {5:["vihreä","keltainen"],...},...}
             acc[curr] = {};
             return acc;
         }, {});
@@ -63,8 +63,10 @@ $(function() {
                 var second = nodes[i + 1];
                 traverseTimes[first][second] = roadTraverseTimes[first][second];
                 traverseTimes[second][first] = roadTraverseTimes[second][first];
-                roadColors[first][second] = color;
-                roadColors[second][first] = color;
+                if (roadColors[first].hasOwnProperty(second)) roadColors[first][second].push(color);
+                else roadColors[first][second] = [color];
+                if (roadColors[second].hasOwnProperty(first)) roadColors[second][first].push(color);
+                else roadColors[second][first] = [color];
             }
         });
 
@@ -106,7 +108,6 @@ $(function() {
                 }
                 return { nodes: nodes, totalTime: routeDuration[source][destination] };
             }
-
             return { bestPath: bestPath, routeDuration: routeDuration };
         }
 
@@ -217,13 +218,11 @@ $(function() {
         }
 
         function img_BusstopMouseleave() {
-            if (isHoveringInfo) return;
-            setTimeout(hideHoverInfo, hoverDelay);
+            if (!isHoveringInfo) setTimeout(hideHoverInfo, hoverDelay);
         }
 
         function hideHoverInfo() {
             if (!isHoveringInfo) hover_route_info.hide();
-
         }
 
         function populateHoverInfo(node) {
@@ -305,6 +304,7 @@ $(function() {
             }
             var routeNodes = bestRoute.nodes;
             var totalTime = bestRoute.totalTime;
+            var previousColor = null;
             routeNodes.forEach(function(node, index) {
                 var bestRouteElemContainer = $('<div></div>').addClass("bestRouteElemContainer");
                 var bestRouteNode = $('<span>' + nodeNames[node] + '</span>').addClass("bestRouteNode");
@@ -312,7 +312,8 @@ $(function() {
                 reitti.append(bestRouteElemContainer);
                 if (index < routeNodes.length - 1) {
                     var routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>'));
-                    routeColorContainer.addClass(roadColors[node][routeNodes[index + 1]]);
+                    if (previousColor === null || (roadColors[node][routeNodes[index + 1]].indexOf(previousColor) === -1)) previousColor = chooseNewBestColor(routeNodes, index);
+                    routeColorContainer.addClass(previousColor);
                     reitti.append(routeColorContainer);
                     addBall(routeNodes[index], routeNodes[index + 1]);
                 }
@@ -321,6 +322,24 @@ $(function() {
             var distanceMessageContainer = $('<div></div>').addClass("distanceMessageContainer").text("Kokonaisaika: " + totalTime + "min");
             reitti.append(distanceMessageContainer);
             updateMap(routeNodes);
+        }
+
+        function chooseNewBestColor(routeNodes, index) {
+            var bestColor = null;
+            var bestLength = 0;
+            roadColors[routeNodes[index]][routeNodes[index + 1]].forEach(function(color) {
+                var nStopsAhead = 0;
+                var currIndex = index;
+                while (currIndex < routeNodes.length - 1 && roadColors[routeNodes[currIndex]][routeNodes[currIndex + 1]].indexOf(color) > -1) {
+                    nStopsAhead++;
+                    currIndex++;
+                }
+                if (nStopsAhead > bestLength) {
+                    bestLength = nStopsAhead;
+                    bestColor = color;
+                }
+            });
+            return bestColor;
         }
 
         function updateMap(routeNodes) {

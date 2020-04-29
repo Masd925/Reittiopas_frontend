@@ -17,7 +17,7 @@ body {
 }
 
 .content-row {
-    padding-bottom: 0%
+    padding-bottom: 0%;
 }
 
 #heading-panel {
@@ -27,7 +27,8 @@ body {
 }
 
 .reittihakurow {
-    margin-bottom: 1%
+    margin-bottom: 1%;
+    font-weight: bold;
 }
 
 #info {
