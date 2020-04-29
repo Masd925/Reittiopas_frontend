@@ -141,7 +141,6 @@ $(function() {
         });
 
         function changeNodeHighlight(rowName, node, isAdded) {
-            console.log("highlight", rowName, node, isAdded);
             if (isAdded) $('#' + rowName + node).addClass("highlight");
             else $('#' + rowName + node).removeClass("highlight");
         }
