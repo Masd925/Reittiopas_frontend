@@ -22,12 +22,12 @@ $(function() {
             R: [47, 70.2]
         };
 
+        var hoverOnLimit = 600;
         var routes = JSON.parse(reittiopasJsonTxt);
         var nodeNames = routes.pysakit; // ["A", "B", ..., "R"]
         var nodes = nodeNames.map(function(elem, index) { return index; }); // [0,1,...,17]
         var roads = routes.tiet;
         var busLines = routes.linjastot;
-        var colors = Object.keys(busLines);
 
         function nodeIndex(nodeName) {
             return nodeNames.indexOf(nodeName);
@@ -106,14 +106,28 @@ $(function() {
                 }
                 return { nodes: nodes, totalTime: routeDuration[source][destination] };
             }
-            return bestPath;
+
+            return { bestPath: bestPath, routeDuration: routeDuration };
         }
 
-        var routeGenerator = fastestRoutes(traverseTimes);
+        var generateRoutes = fastestRoutes(traverseTimes);
+        var routeGenerator = generateRoutes.bestPath;
+        var routeDuration = generateRoutes.routeDuration;
 
         var mista = $('#mista');
         var mihin = $('#mihin');
         var reitti = $('#reitti');
+        var hover_route_info = $("#hover_route_info");
+
+        var hoverDelay = 150;
+        var chosen_mista = 0;
+        var chosen_mihin = 10;
+        var isHoveringInfo = false;
+
+
+
+
+        updateRoute();
 
         nodes.forEach(function(node) {
             var nodeButtonContainer = $('<div></div>').addClass("nodeButtonContainer");
@@ -129,17 +143,11 @@ $(function() {
             mihin.append(nodeButtonContainer);
         });
 
-        var chosen_mista = 0;
-        var chosen_mihin = 10;
-
         function changeNodeHighlight(rowName, node, isAdded) {
+            console.log("highlight", rowName, node, isAdded);
             if (isAdded) $('#' + rowName + node).addClass("highlight");
             else $('#' + rowName + node).removeClass("highlight");
         }
-
-        changeNodeHighlight("mista", chosen_mista, true);
-        changeNodeHighlight("mihin", chosen_mihin, true);
-        updateRoute();
 
         $("#content-panel").on('click', panel_clickHandler);
 
@@ -178,14 +186,92 @@ $(function() {
             var button = $("<div></div>").addClass("map_button").css("left", left + "%").css("top", top + "%").attr("id", "button" + node);
             image.append(button);
         });
-
         $("#image_container").on('click', img_clickHandler);
+
+        $(".map_button").on({
+            mouseenter: function(e) {
+                var id = $(e.target).attr("id");
+                if (id !== undefined && id.slice(0, 6) === "button") {
+                    var node = Number(id.slice(6));
+                    img_BusstopMouseenter(node);
+                }
+            },
+            mouseleave: function(e) {
+                img_BusstopMouseleave();
+            }
+        });
 
         function img_clickHandler(e) {
             var id = $(e.target).attr("id");
             if (id !== undefined && id.slice(0, 6) === "button") {
                 var node = Number(id.slice(6));
                 imgBusstopClicked(node);
+            }
+        }
+
+        function img_BusstopMouseenter(node) {
+            if (($(window).width() <= hoverOnLimit) || isHoveringInfo) return;
+            populateHoverInfo(node);
+            var info_offset_top = -20;
+            var info_offset_left = 4.5;
+            var nodeName = nodeNames[node];
+            var left = img_stop_coordinates[nodeName][0];
+            var top = img_stop_coordinates[nodeName][1];
+            hover_route_info.show().css("top", top + info_offset_top + "%").css("left", left + info_offset_left + "%");
+        }
+
+        function img_BusstopMouseleave() {
+            if (isHoveringInfo) return;
+            setTimeout(hideHoverInfo, hoverDelay);
+        }
+
+        function hideHoverInfo() {
+            if (!isHoveringInfo) hover_route_info.hide();
+
+        }
+
+        function populateHoverInfo(node) {
+            hover_route_info.empty();
+            var startRow = $("<div><span>" + nodeNames[node] + "&nbsp;&#8594;" + "</span></div>").attr("id", "hove_start_line");
+            hover_route_info.append(startRow);
+            nodes.forEach(function(n) {
+                if (n !== node) {
+                    var duration = routeDuration[n][node];
+                    if (duration !== Infinity) {
+                        var elem = $("<div></div>").addClass("hover_line_container");
+                        var addedSpace = duration < 10 ? "&nbsp;" : "";
+                        var span = $("<span>" + nodeNames[n] + "&nbsp;" + addedSpace + duration + " min" + "</span>").addClass("hover_line_span").attr("id", n);
+                        elem.append(span);
+                        hover_route_info.append(elem);
+                    }
+                }
+            });
+            $(".hover_line_span").on("click", function(e) {
+                changeNodeHighlight("mista", chosen_mista, false);
+                changeNodeHighlight("mihin", chosen_mihin, false);
+                chosen_mista = node;
+                chosen_mihin = Number($(e.target).attr("id"));
+                changeNodeHighlight("mista", chosen_mista, true);
+                changeNodeHighlight("mihin", chosen_mihin, true);
+                hover_route_info.empty();
+                hover_route_info.hide();
+                isHoveringInfo = false;
+                updateRoute();
+            });
+        }
+
+        function pressed(rowName, node) {
+            if (rowName === "mista" && node !== chosen_mista && node !== chosen_mihin) {
+                changeNodeHighlight("mista", chosen_mista, false);
+                changeNodeHighlight("mista", node, true);
+                chosen_mista = node;
+                updateRoute();
+            }
+            if (rowName === "mihin" && node !== chosen_mihin && node !== chosen_mista) {
+                changeNodeHighlight("mihin", chosen_mihin, false);
+                changeNodeHighlight("mihin", node, true);
+                chosen_mihin = node;
+                updateRoute();
             }
         }
 
@@ -200,6 +286,18 @@ $(function() {
                 updateRoute();
             }
         }
+
+        $("#hover_route_info").on({
+            mouseenter: function() {
+                isHoveringInfo = true;
+                $("#hover_route_info").show();
+            },
+            mouseleave: function() {
+                isHoveringInfo = false;
+                //$("#hover_route_info").hide();
+                setTimeout(hideHoverInfo, hoverDelay);
+            }
+        });
 
         function updateRoute() {
             reitti.empty();
@@ -255,6 +353,8 @@ $(function() {
             }
 
         }
+        changeNodeHighlight("mista", chosen_mista, true);
+        changeNodeHighlight("mihin", chosen_mihin, true);
 
     } catch (error) {
         $('#reitti').text("Palvelussa on teknisiä ongelmia. Yritä hetken kuluttua uudelleen.");

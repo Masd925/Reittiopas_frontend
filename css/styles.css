@@ -107,6 +107,26 @@ body {
     border-radius: 10px
 }
 
+#hover_route_info {
+    z-index: 100000;
+    text-align: center;
+    position: absolute;
+    background-color: rgb(42, 42, 117);
+    color: whitesmoke;
+    display: none;
+    font-size: 60%;
+    padding: 1%;
+}
+
+.hover_line_span:hover {
+    color: yellow;
+    background-color: teal;
+}
+
+#hove_start_line {
+    font-size: 120%
+}
+
 .highlight {
     background-color: greenyellow
 }
