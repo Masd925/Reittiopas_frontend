@@ -26,8 +26,6 @@ on https://koodihaaste.solidabis.com/reittiopas.json changes.
 If some stops are removed, times between stops change, or bus routes change, page is kept up to date automatically.
 Map picture and app.js img_stop_coordinates variable need to be manually updated. 
 
-Solution doesn't minimize vehicle changes between buslines.
-
 ## License
 
 Copyright © 2020 Markus Kiili
