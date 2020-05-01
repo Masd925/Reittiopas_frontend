@@ -22,7 +22,7 @@ $(function() {
             R: [47, 70.2]
         };
 
-        var hoverOnLimit = 600;
+        var hoverWidthLimit = 600;
         var routes = JSON.parse(reittiopasJsonTxt);
         var nodeNames = routes.pysakit; // ["A", "B", ..., "R"]
         var nodes = nodeNames.map(function(elem, index) { return index; }); // [0,1,...,17]
@@ -72,7 +72,7 @@ $(function() {
             }
         });
 
-        function fastestRoutes(traverseTimes) { // Uses Floyd-Warshall algorithm to solve all best routes 
+        function fastestRoutes(traverseTimes) { // Uses Floyd-Warshall algorithm to solve all best routes. Efficient also on large networks.
             var nodes = Object.keys(traverseTimes).map(Number);
             var nNodes = nodes.length;
             var routeDuration = nodes.map(function(elem) {
@@ -209,7 +209,7 @@ $(function() {
         }
 
         function img_BusstopMouseenter(node) {
-            if (($(window).width() <= hoverOnLimit) || isHoveringInfo) return;
+            if (($(window).width() <= hoverWidthLimit) || isHoveringInfo) return;
             populateHoverInfo(node);
             var info_offset_top = -20;
             var info_offset_left = 4.5;
@@ -326,7 +326,7 @@ $(function() {
             updateMap(routeNodes);
         }
 
-        function chooseNewBestColor(routeNodes, index) {
+        function chooseNewBestColor(routeNodes, index) { // For minimizing bus line changes on fastest route
             var bestColor = null;
             var bestLength = 0;
             roadColors[routeNodes[index]][routeNodes[index + 1]].forEach(function(color) {
