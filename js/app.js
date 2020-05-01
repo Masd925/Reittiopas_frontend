@@ -29,6 +29,8 @@ $(function() {
         var roads = routes.tiet;
         var busLines = routes.linjastot;
 
+        document.getElementById('map_image').draggable = false;
+
         function nodeIndex(nodeName) {
             return nodeNames.indexOf(nodeName);
         }
