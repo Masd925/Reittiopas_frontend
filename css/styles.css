@@ -17,7 +17,7 @@ body {
 }
 
 .content-row {
-    padding-bottom: 0%;
+    padding-bottom: 0%
 }
 
 #heading-panel {
@@ -28,7 +28,7 @@ body {
 
 .reittihakurow {
     margin-bottom: 1%;
-    font-weight: bold;
+    font-weight: bold
 }
 
 #info {
@@ -124,7 +124,7 @@ body {
 }
 
 .hover_line_span {
-    white-space: nowrap;
+    white-space: nowrap
 }
 
 .hover_line_span:hover {
@@ -167,7 +167,7 @@ body {
     /* Old versions of Firefox */
     -ms-user-select: none;
     /* Internet Explorer/Edge */
-    user-select: none;
+    user-select: none
     /* Non-prefixed version, currently
     supported by Chrome, Opera and Firefox */
 }
