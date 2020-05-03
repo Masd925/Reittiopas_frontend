@@ -229,7 +229,7 @@ $(function() {
 
         function populateHoverInfo(node) {
             hover_route_info.empty();
-            var startRow = $("<div><span>" + nodeNames[node] + "&nbsp;&#8594;" + "</span></div>").attr("id", "hove_start_line");
+            var startRow = $("<div><span>" + nodeNames[node] + "&nbsp;&#8594;" + "</span></div>").attr("id", "hover_start_line");
             hover_route_info.append(startRow);
             nodes.forEach(function(n) {
                 if (n !== node) {
