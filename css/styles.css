@@ -31,6 +31,10 @@ body {
     font-weight: bold
 }
 
+.reitti_divs {
+    margin-top: 2%
+}
+
 #info {
     color: rgb(2, 75, 2)
 }

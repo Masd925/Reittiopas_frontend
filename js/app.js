@@ -313,7 +313,7 @@ $(function() {
                 bestRouteElemContainer.append(bestRouteNode);
                 reitti.append(bestRouteElemContainer);
                 if (index < routeNodes.length - 1) {
-                    var routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;&nbsp;</span>'));
+                    var routeColorContainer = $('<div></div>').addClass("routeColorContainer").append($('<span>&nbsp;&nbsp;&nbsp;</span>'));
                     if (previousColor === null || (roadColors[node][routeNodes[index + 1]].indexOf(previousColor) === -1)) previousColor = chooseNewBestColor(routeNodes, index);
                     routeColorContainer.addClass(previousColor);
                     reitti.append(routeColorContainer);
