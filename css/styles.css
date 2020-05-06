@@ -49,6 +49,10 @@ body {
     border: 2px solid lightblue
 }
 
+.nodeButtonContainer:hover {
+    border: 2px solid rgb(79, 167, 130);
+}
+
 .bestRouteElemContainer {
     float: left;
     margin-right: 1%;
