@@ -17,9 +17,9 @@ Clone the repo into the root folder on a web server.
 
 ## Usage
 
-Allows the user to choose starting and end busstops and calculates and shows the fastest route and the total time taken.
+Allows the user to choose starting and end bus stops and calculates and shows the fastest route and the total time taken.
 Route is shown as letters and colors, and with map marks.
-User can choose start and end busstops by clicking on the map, by clicking buttons on the top of the page, or by hovering over start busstop on the map and choosing the end busstop on popup. On smallest mobile devices, only clicking the map is an option for clearer usage and layout.
+User can choose start and end bus stops by clicking on the map, by clicking buttons on the top of the page, or by hovering over start bus stop on the map and choosing the end bus stop on popup. On smallest mobile devices, only clicking the map is an option for clearer usage and layout.
 
 Backend part updates the served json.js file, so frontend is up to date if route info 
 on https://koodihaaste.solidabis.com/reittiopas.json changes.
